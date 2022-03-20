@@ -26,6 +26,7 @@ public class Services {
 
     //실제 서비스 모델.
     public Flux<TestModel> getInformations(){
+        log.debug("GetInfos");
         return Flux.<TestModel> generate(sink -> sink.next(randomPick()))
                 .delayElements(Duration.ofMillis(250));
     }
