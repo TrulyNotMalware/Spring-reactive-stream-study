@@ -1,7 +1,5 @@
 package com.spring.devplt;
 
-import com.spring.devplt.services.SimpleServer;
-import com.spring.devplt.services.StreamTest;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
