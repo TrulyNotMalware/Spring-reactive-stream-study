@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'com.google.cloud.tools.jib' version '2.1.0'
 }
 
 group = 'com.spring'
@@ -22,7 +23,13 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    //Reactive MongoDB
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+
+    //Swagger Supports
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
+    implementation "io.springfox:springfox-swagger-ui:3.0.0"
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
@@ -33,4 +40,19 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+jib {
+    from {
+        image = "openjdk:8-jdk-alpine"
+    }
+    to {
+        image = "basd/${project.name}"
+        tags = ["latest", "${project.name}-${project.version}".toString()]
+    }
+    container {
+        volumes = ['/tmp']
+        jvmFlags = ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=9999"]
+        ports = ['8080']
+    }
 }
