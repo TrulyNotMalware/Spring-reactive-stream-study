@@ -2,6 +2,9 @@ package com.spring.devplt.services;
 
 
 import com.spring.devplt.models.TestModel;
+import com.spring.devplt.repository.BlockUserRepository;
+import com.spring.devplt.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -12,8 +15,12 @@ import java.util.List;
 import java.util.Random;
 
 @Slf4j
+@AllArgsConstructor
 @Service
 public class Services {
+    //Repository
+    private final UserRepository UserRepository;
+    private final BlockUserRepository BlockUserRepository;
 
     private Random picker = new Random();
     // Database 라고 가정하고, 정보를 가져왔다고 생각.
@@ -35,4 +42,5 @@ public class Services {
     private TestModel randomPick(){
         return this.infos.get(picker.nextInt(infos.size()));
     }
+
 }
