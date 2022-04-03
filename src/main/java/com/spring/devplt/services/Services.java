@@ -2,12 +2,16 @@ package com.spring.devplt.services;
 
 
 import com.spring.devplt.models.TestModel;
+import com.spring.devplt.models.User;
 import com.spring.devplt.repository.BlockUserRepository;
 import com.spring.devplt.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -43,4 +47,16 @@ public class Services {
         return this.infos.get(picker.nextInt(infos.size()));
     }
 
+
+    public Flux<User> searchWithExampleQuery(String id, String name, boolean isAvailable){
+        User user = new User(id, "1234", name, isAvailable, null);
+
+        ExampleMatcher matcher = ( isAvailable ? ExampleMatcher.matchingAll() : ExampleMatcher.matchingAny())
+                .withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+                .withIgnorePaths("pwd")
+                .withIgnorePaths("last_login");
+
+        Example<User> probe = Example.of(user, matcher);
+        return UserRepository.findAll(probe);
+    }
 }
