@@ -11,6 +11,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -49,6 +50,9 @@ public class Services {
 
 
     public Flux<User> searchWithExampleQuery(String id, String name, boolean isAvailable){
+
+        Hooks.onOperatorDebug();
+
         User user = new User(id, "1234", name, isAvailable, null);
 
         ExampleMatcher matcher = ( isAvailable ? ExampleMatcher.matchingAll() : ExampleMatcher.matchingAny())

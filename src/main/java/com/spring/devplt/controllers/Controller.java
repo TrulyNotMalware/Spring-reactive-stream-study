@@ -33,11 +33,9 @@ public class Controller {
     Flux<TestModel> getInfoToChecked(){
         log.debug("/getInfoWithFlags");
         return this.service.getInformations()
-                .doOnNext(info -> {
-                        log.debug("id :"+info.getId());
-                        log.debug("pwd :"+info.getPwd());
-                })
-                .map(TestModel -> TestModel.isChecked(TestModel));
+                .log("getInformations")
+                .map(TestModel -> TestModel.isChecked(TestModel))
+                .log("Fin");
     }
 
     @GetMapping(value="/searchAllUser")

@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+
 @Component
 public class InitialLoader {
 
@@ -21,7 +23,7 @@ public class InitialLoader {
     @Bean
     CommandLineRunner initializeOnReativeWay(MongoOperations mongo){
         return args -> {
-            mongo.save(new User("root","1234","Admin"));
+            mongo.save(new User("root","1234","Admin",true, null));
         };
     }
 }
