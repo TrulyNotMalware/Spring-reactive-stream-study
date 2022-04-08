@@ -9,6 +9,11 @@ import reactor.blockhound.BlockHound;
 public class DevpltApplication {
     public static void main(String[] args) {
         BlockHound.install();
+        //Template에서 제거할 때는 이렇게.
+//        BlockHound.builder()
+//                        .allowBlockingCallsInside(
+//                                TemplateEngine.class
+//                        ).install();
         SpringApplication.run(DevpltApplication.class, args);
     }
 }
