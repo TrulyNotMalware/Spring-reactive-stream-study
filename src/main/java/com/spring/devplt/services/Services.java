@@ -6,6 +6,7 @@ import com.spring.devplt.models.User;
 import com.spring.devplt.repository.BlockUserRepository;
 import com.spring.devplt.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -21,6 +22,7 @@ import java.util.Random;
 
 @Slf4j
 @AllArgsConstructor
+//@RequiredArgsConstructor
 @Service
 public class Services {
     //Repository
@@ -50,7 +52,6 @@ public class Services {
 
 
     public Flux<User> searchWithExampleQuery(String id, String name, boolean isAvailable){
-
         Hooks.onOperatorDebug();
 
         User user = new User(id, "1234", name, isAvailable, null);
@@ -62,5 +63,13 @@ public class Services {
 
         Example<User> probe = Example.of(user, matcher);
         return UserRepository.findAll(probe);
+    }
+
+    public Mono<User> createNewUser(String id,String name, boolean isAvailable){
+        Hooks.onOperatorDebug();
+        // Default Pwd 1234
+        User user = new User(id, "1234", name, isAvailable, null);
+
+        return Mono.just(user);
     }
 }
