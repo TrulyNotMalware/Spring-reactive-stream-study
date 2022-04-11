@@ -10,6 +10,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -40,7 +44,7 @@ public class ServicesTest { //Service Unit test
         // 이런 User 객체를, 테스트용으로 사용한다.
         this.service.createNewUser("test","testUser",true)
         .as(StepVerifier::create).expectNextMatches(user -> {
-                    assertThat(user.getPwd()).containsExactly("1234");
+                    assertThat(user.getPwd()).contains("1234");
                     return true;
                 }).verifyComplete();
     }
