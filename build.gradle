@@ -34,6 +34,19 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation 'io.projectreactor.tools:blockhound:1.0.6.RELEASE'
 
+    //Kubernetes Supports
+    implementation 'io.fabric8:kubernetes-client:5.12.2'
+    implementation 'io.fabric8:kubernetes-server-mock:5.12.2'
+//	implementation 'io.fabric8:kubernetes-api:3.0.12'
+    implementation 'io.fabric8:kubernetes-model-core:5.12.2'
+    implementation 'io.fabric8:kubernetes-model-common:5.12.2'
+    implementation 'io.fabric8:kubernetes-model-batch:5.12.2'
+    implementation 'io.fabric8:kubernetes-model-certificates:5.12.2'
+//	implementation 'io.fabric8:kubernetes-model-annotator:4.13.3'
+
+    //Json
+    implementation 'org.json:json:20220320'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
