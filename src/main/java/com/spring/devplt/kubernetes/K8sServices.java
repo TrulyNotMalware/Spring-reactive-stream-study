@@ -29,6 +29,10 @@ public class K8sServices {
             e.printStackTrace();
         }
     }
+    //Constructor Overloading
+    public K8sServices(KubernetesClient client){
+        this.client = client;
+    }
 
     public JSONObject getNamespaceList(){
         Hooks.onOperatorDebug();
@@ -47,6 +51,23 @@ public class K8sServices {
                 .forEach(log::debug);
         json.append("nameSpace",client.namespaces().list().getItems());
         return json;
+    }
+
+    public int getPodNumbers(String namespace){
+        int PodsNumbers = this.client
+                .pods()
+                .inNamespace(namespace)
+                .list()
+                .getItems()
+                .size();
+        return PodsNumbers;
+//                .stream()
+//                .map(pod -> {
+//                    log.debug(pod.getMetadata().getName());
+//                    return pod;
+//                })
+//                .forEach();
+
     }
 
 }

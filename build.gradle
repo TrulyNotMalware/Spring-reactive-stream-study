@@ -44,6 +44,10 @@ dependencies {
     implementation 'io.fabric8:kubernetes-model-certificates:5.12.2'
 //	implementation 'io.fabric8:kubernetes-model-annotator:4.13.3'
 
+    //Junit5
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
     //Json
     implementation 'org.json:json:20220320'
 
