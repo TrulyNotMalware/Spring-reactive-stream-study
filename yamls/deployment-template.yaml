@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-study-helper-deploy
+  labels:
+    app: spring-study
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-study
+  template:
+    metadata:
+      labels:
+        app: spring-study
+    spec:
+      containers:
+        - name: spring-study
+          image: spring/study:latest
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: kubectl-config
+              mountPath: /root/.kube
+          ports:
+            - containerPort: 8888
+          env:
+            - name: CLUSTER_IP_ADDRESS
+              value: "SERVER_IP"
+            - name: NFS_IP_ADDRESS
+              value: "SERVER_IP"
+      volumes:
+        - name: kubectl-config
+          configMap:
+            name: CONFIGMAP_NAME
+      serviceAccountName: spring-study

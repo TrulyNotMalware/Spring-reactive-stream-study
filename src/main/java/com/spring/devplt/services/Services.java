@@ -1,6 +1,7 @@
 package com.spring.devplt.services;
 
 
+import com.spring.devplt.kubernetes.K8sServices;
 import com.spring.devplt.models.TestModel;
 import com.spring.devplt.models.User;
 import com.spring.devplt.repository.BlockUserRepository;
@@ -8,6 +9,7 @@ import com.spring.devplt.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class Services {
     //Repository
     private final UserRepository UserRepository;
     private final BlockUserRepository BlockUserRepository;
+    private final K8sServices kubectl;
+
 
     private Random picker = new Random();
     // Database 라고 가정하고, 정보를 가져왔다고 생각.
@@ -71,5 +75,11 @@ public class Services {
         User user = new User(id, "1234", name, isAvailable, null);
 
         return Mono.just(user);
+    }
+
+    public Mono<JSONObject> getNamespaceList(){
+        JSONObject results = this.kubectl.getNamespaceList();
+        log.debug("Results : {}",results);
+        return Mono.just(results);
     }
 }

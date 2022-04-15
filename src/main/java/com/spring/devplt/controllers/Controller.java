@@ -7,6 +7,7 @@ import com.spring.devplt.services.Services;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -42,5 +43,11 @@ public class Controller {
     Flux<User> searchByName(@RequestParam String id, @RequestParam(required = false) String name,
                             @RequestParam boolean isAvailable){
         return this.service.searchWithExampleQuery(id, name,isAvailable);
+    }
+
+    @GetMapping(value="/getNamespaceList", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    Mono<JSONObject> getNamespaceList(){
+        log.debug("getNamespaceLists");
+        return this.service.getNamespaceList();
     }
 }

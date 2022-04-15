@@ -6,11 +6,12 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 
-import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Hooks;
+
 
 @Slf4j
 @Component
@@ -30,6 +31,7 @@ public class K8sServices {
     }
 
     public JSONObject getNamespaceList(){
+        Hooks.onOperatorDebug();
         JSONObject json = new JSONObject();
 
         client.namespaces()
