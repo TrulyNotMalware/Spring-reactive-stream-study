@@ -14,5 +14,5 @@ public class User {
     private String pwd;
     private String name;
     private boolean isAvailable;
-    private Date last_login;
+    private String last_login;
 }
