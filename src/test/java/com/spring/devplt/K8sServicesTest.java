@@ -1,16 +1,23 @@
 package com.spring.devplt;
 
 import com.spring.devplt.kubernetes.K8sServices;
+import io.fabric8.kubernetes.api.model.Namespace;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 @EnableKubernetesMockClient(crud = true)
 public class K8sServicesTest {
@@ -50,6 +57,26 @@ public class K8sServicesTest {
 
     @Test
     public void testPodNumbers(){
+        assertNotNull(this.client.pods()
+                .inNamespace("testNamespaces")
+                .list());
         assertEquals(2, this.services.getPodNumbers("testNamespaces"));
+    }
+
+    @Test
+    public void testNamespaceList() {
+        //우선 Client 객체가 정상적으로 namespace list 를 출력할 수 있는지부터 확인.
+        List<Namespace> kubectlGetNS = this.client.namespaces()
+                .list()
+                .getItems();
+        // Null 값인지 아닌지부터 체크.
+        assertNotNull(kubectlGetNS);
+        kubectlGetNS
+                .stream()
+                .map(Namespace::getMetadata)
+                .map(ObjectMeta::getName)
+                .forEach(System.out::println);
+        JSONObject json = this.services.getNamespaceList();
+
     }
 }

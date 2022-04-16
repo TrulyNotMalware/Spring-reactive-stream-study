@@ -21,7 +21,6 @@ public class K8sServices {
     //생성자에서 Kubernetes Builds
     K8sServices(){
         try{
-
             this.client = new DefaultKubernetesClient();
         }catch(KubernetesClientException e){
             this.client = null;
@@ -36,20 +35,22 @@ public class K8sServices {
 
     public JSONObject getNamespaceList(){
         Hooks.onOperatorDebug();
+        log.debug("getNamespaceLists");
         JSONObject json = new JSONObject();
 
-        client.namespaces()
+        this.client.namespaces()
                 .list()
                 .getItems()
                 .stream()
                 .sorted()
                 .map(Namespace::getMetadata)
-                .peek(ObjectMeta -> { //Testing
-                    log.debug(ObjectMeta.getName());
-                })
                 .map(ObjectMeta::getName)
-                .forEach(log::debug);
-        json.append("nameSpace",client.namespaces().list().getItems());
+                .forEach(name ->{
+                    log.debug("Namespace : {}",name);
+                    json.append("nameSpace1",name);
+                });
+//        json.append("nameSpace",client.namespaces().list().getItems());
+        log.debug("Json : {}",json);
         return json;
     }
 
