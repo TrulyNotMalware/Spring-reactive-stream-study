@@ -2,7 +2,6 @@ package com.spring.devplt;
 
 import com.spring.devplt.controllers.Controller;
 import com.spring.devplt.models.User;
-import com.spring.devplt.repository.UserRepository;
 import com.spring.devplt.services.Services;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +59,6 @@ public class ControllerSliceTest {
                 .doOnSuccess(stringResponseEntity -> {
                     assertEquals(stringResponseEntity.getStatusCode(), HttpStatus.OK);
                 });
-
     }
 
 }

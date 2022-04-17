@@ -8,7 +8,7 @@ import reactor.blockhound.BlockHound;
 @SpringBootApplication
 public class DevpltApplication {
     public static void main(String[] args) {
-        BlockHound.install();
+//        BlockHound.install();
         //Template에서 제거할 때는 이렇게.
 //        BlockHound.builder()
 //                        .allowBlockingCallsInside(

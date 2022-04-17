@@ -47,6 +47,9 @@ dependencies {
     //BlockHound Tests
 //    testImplementation 'io.projectreactor.tools:blockhound-junit-platform:1.0.6.RELEASE'
 
+    //[Manage]Actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
     //Junit5
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'

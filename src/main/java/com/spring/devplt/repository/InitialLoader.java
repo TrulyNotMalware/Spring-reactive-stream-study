@@ -20,10 +20,10 @@ public class InitialLoader {
 //    }
     // Non Block 방식의 Repository 에서 blocking 기능을 구현한다.
     // 이러면 누군가 Blocking 방식의 Repo를 쓸 일도 없다.
-    @Bean
-    CommandLineRunner initializeOnReativeWay(MongoOperations mongo){
-        return args -> {
-            mongo.save(new User("root","1234","Admin",true, null));
-        };
-    }
+//    @Bean
+//    CommandLineRunner initializeOnReativeWay(MongoOperations mongo){
+//        return args -> {
+//            mongo.save(new User("root","1234","Admin",true, null));
+//        };
+//    }
 }

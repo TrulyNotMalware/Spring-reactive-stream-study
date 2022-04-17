@@ -5,6 +5,7 @@ import com.spring.devplt.models.TestModel;
 import com.spring.devplt.models.User;
 import com.spring.devplt.services.Services;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -15,12 +16,12 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @ToString
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(path="/api/test")
 public class Controller {
 
-    private final Services service;
+    private Services service;
 
     //Constructor 는 Lombok 의 어노테이션 @AllArgsConstructor 를 이용해서 대체한다.
     //Get - Mapping

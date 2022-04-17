@@ -23,13 +23,11 @@ import java.util.List;
 import java.util.Random;
 
 @Slf4j
-@AllArgsConstructor
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class Services {
     //Repository
-    private final UserRepository UserRepository;
-    private final BlockUserRepository BlockUserRepository;
+    private final UserRepository userRepository;
     private final K8sServices kubectl;
 
 
@@ -41,6 +39,7 @@ public class Services {
             new TestModel("3","3",false),
             new TestModel("4","4",false)
     );
+
 
     //실제 서비스 모델.
     public Flux<TestModel> getInformations(){
@@ -66,14 +65,14 @@ public class Services {
                 .withIgnorePaths("last_login");
 
         Example<User> probe = Example.of(user, matcher);
-        return UserRepository.findAll(probe);
+        return userRepository.findAll(probe);
     }
 
     public Mono<User> createNewUser(String id,String name, boolean isAvailable){
         Hooks.onOperatorDebug();
         // Default Pwd 1234
         User user = new User(id, "1234", name, isAvailable, null);
-        return this.UserRepository.save(user)
+        return this.userRepository.save(user)
                 .doOnError(error -> {
                     log.trace(error.getMessage());
                 });
