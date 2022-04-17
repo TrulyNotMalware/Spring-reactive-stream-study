@@ -50,4 +50,12 @@ public class Controller {
         log.debug("getNamespaceLists");
         return this.service.getNamespaceList();
     }
+
+    @PostMapping(value="/insertNewUser")
+    Mono<User> insertNewUser(@RequestParam String id,
+                             @RequestParam String name){
+        log.debug("Insert New user : {}, {}",id,name);
+        return this.service.createNewUser(id,name,true);
+    }
+
 }

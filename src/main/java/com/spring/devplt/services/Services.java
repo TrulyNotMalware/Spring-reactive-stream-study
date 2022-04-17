@@ -73,8 +73,10 @@ public class Services {
         Hooks.onOperatorDebug();
         // Default Pwd 1234
         User user = new User(id, "1234", name, isAvailable, null);
-
-        return Mono.just(user);
+        return this.UserRepository.save(user)
+                .doOnError(error -> {
+                    log.trace(error.getMessage());
+                });
     }
 
     public Mono<JSONObject> getNamespaceList(){

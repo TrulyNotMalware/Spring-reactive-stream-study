@@ -44,6 +44,9 @@ dependencies {
     implementation 'io.fabric8:kubernetes-model-certificates:5.12.2'
 //	implementation 'io.fabric8:kubernetes-model-annotator:4.13.3'
 
+    //BlockHound Tests
+//    testImplementation 'io.projectreactor.tools:blockhound-junit-platform:1.0.6.RELEASE'
+
     //Junit5
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
