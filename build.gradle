@@ -75,7 +75,7 @@ jib {
         image = "openjdk:8-jdk-alpine"
     }
     to {
-        image = "basd/${project.name}"
+        image = "testing/${project.name}"
         tags = ["latest", "${project.name}-${project.version}".toString()]
     }
     container {
