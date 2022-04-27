@@ -54,6 +54,12 @@ dependencies {
     //RestDocs - asciidoctor
 //    implementation 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
 
+    //Hateos
+    implementation (group: 'org.springframework.hateoas', name: 'spring-hateoas'){
+        // Spring mvc exclude
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-web'
+    }
+
     //Junit5
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
