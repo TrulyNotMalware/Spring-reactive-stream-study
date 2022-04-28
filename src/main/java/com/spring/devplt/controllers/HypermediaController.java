@@ -5,10 +5,7 @@ import com.spring.devplt.repository.UserRepository;
 import com.spring.devplt.services.Services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +30,8 @@ public class HypermediaController {
         Mono<Link> selfLink = linkTo(controller.findUser(id)).withSelfRel().toMono();
 
         Mono<Link> aggregateLink = linkTo(controller.findAll()).withRel(IanaLinkRelations.ITEM).toMono();
-
         return Mono.zip(this.userRepository.findById(id), selfLink, aggregateLink)
-                .map(objects -> EntityModel.of(objects.getT1(), objects.getT2(), objects.getT3()));
+                .map(objects -> EntityModel.of(objects.getT1(), Links.of(objects.getT2(), objects.getT3())));
     }
 
     @GetMapping("/getAllUser")
