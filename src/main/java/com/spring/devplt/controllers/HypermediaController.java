@@ -40,10 +40,10 @@ public class HypermediaController {
                 .flatMap(user -> findUser(user.getId()))
                 .collectList()
                 .flatMap(entityModels ->
-                    linkTo(methodOn(HypermediaController.class)
-                    .findAll()).withSelfRel()
-                            .toMono()
-                            .map(selfLink -> CollectionModel.of(entityModels, selfLink))
+                        linkTo(methodOn(HypermediaController.class)
+                                .findAll()).withSelfRel()
+                                .toMono()
+                                .map(selfLink -> CollectionModel.of(entityModels, selfLink))
                 );
 
     }
