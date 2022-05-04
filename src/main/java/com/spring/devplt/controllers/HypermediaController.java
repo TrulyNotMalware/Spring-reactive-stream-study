@@ -45,6 +45,5 @@ public class HypermediaController {
                                 .toMono()
                                 .map(selfLink -> CollectionModel.of(entityModels, selfLink))
                 );
-
     }
 }
