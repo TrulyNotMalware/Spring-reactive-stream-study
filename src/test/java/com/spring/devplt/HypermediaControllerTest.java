@@ -33,7 +33,7 @@ public class HypermediaControllerTest {
         when(this.userRepository.findById("root"))
                 .thenReturn(Mono.just(new User("root","1234","Admin",true,null)));
 
-        this.services = new Services(this.userRepository,null);
+        this.services = new Services(this.userRepository,null,null);
     }
 
     @Test

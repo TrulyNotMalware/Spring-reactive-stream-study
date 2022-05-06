@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
+
 @Slf4j
 @ToString
 @RequiredArgsConstructor
@@ -59,4 +61,10 @@ public class Controller {
         return this.service.createNewUser(id,name,true);
     }
 
+    @PutMapping(value="/insertNewUser")
+    Mono<User> insertNewUser(@RequestBody HashMap<String, String> params){
+        //User 객체는 @Data 어노테이션으로, getter & Setter 모두 설정되어 있기 때문에,
+        //Json 형식만 완벽하게 맞춰 준다면, @RequestBody 로 User 객체를 받아도 됨.
+        return this.service.createNewUser(params.get("id"),params.get("name"),true);
+    }
 }

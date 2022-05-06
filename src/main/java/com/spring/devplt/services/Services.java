@@ -4,19 +4,21 @@ package com.spring.devplt.services;
 import com.spring.devplt.kubernetes.K8sServices;
 import com.spring.devplt.models.TestModel;
 import com.spring.devplt.models.User;
-import com.spring.devplt.repository.BlockUserRepository;
 import com.spring.devplt.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +32,8 @@ public class Services {
     private final UserRepository userRepository;
     private final K8sServices kubectl;
 
+    //Amqp
+    private final AmqpTemplate amqpTemplate;
 
     private Random picker = new Random();
     // Database 라고 가정하고, 정보를 가져왔다고 생각.
@@ -82,5 +86,16 @@ public class Services {
         JSONObject results = this.kubectl.getNamespaceList();
         log.debug("Results : {}",results);
         return Mono.just(results);
+    }
+
+    public Mono<ResponseEntity<?>> amqpCreateNewUser(String id, String name, boolean isAvailable){
+        Hooks.onOperatorDebug();
+        User user = new User(id, "1234", name, isAvailable, null);
+        return Mono.just(user)
+                .subscribeOn(Schedulers.boundedElastic())
+                .flatMap( contentUser -> Mono.fromCallable(()->{
+                    this.amqpTemplate.convertAndSend("new-user-insert","new-user-insert",contentUser);
+                    return ResponseEntity.created(URI.create("/api/amqp/insertNewUser")).build();
+                }));
     }
 }

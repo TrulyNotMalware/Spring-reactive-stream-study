@@ -34,7 +34,7 @@ public class AffordanceControllerTest {
                 .thenReturn(Mono.just(sampleUser));
         when(userRepository.save(any(User.class))).thenReturn(Mono.just(sampleUser));
 
-        this.services = new Services(this.userRepository,null);
+        this.services = new Services(this.userRepository,null,null);
     }
 
     @Test

@@ -36,7 +36,7 @@ public class ServicesTest { //Service Unit test
         when(userRepository.save(any(User.class))).thenReturn(Mono.just(sampleUser));
 
         //생성자 주입. Mock 협력자를 주입.
-        service = new Services(userRepository,null);
+        service = new Services(userRepository,null,null);
     }
 
     @Test

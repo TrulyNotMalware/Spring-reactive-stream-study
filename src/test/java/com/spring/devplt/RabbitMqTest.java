@@ -12,6 +12,10 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import reactor.test.StepVerifier;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.HashMap;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -35,7 +39,38 @@ public class RabbitMqTest {
     }
 
     @Test
-    void verifyMessage() throws InterruptedException{
-//        this.webTestClient.post().uri()
+    void verifyMessagingThroughAmqp() throws InterruptedException{
+        HashMap<String,String> body1 = new HashMap<>();
+        body1.put("id","testUserId");
+        body1.put("name","testUserName");
+        HashMap<String,String> body2 = new HashMap<>();
+        body2.put("id","testUserId2");
+        body2.put("name","testUserName2");
+        this.webTestClient.put().uri("/api/test/insertNewUser")
+                .bodyValue(body1)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody();
+        Thread.sleep(1500L);
+
+        this.webTestClient.put().uri("/api/test/insertNewUser")
+                .bodyValue(body2)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody();
+        Thread.sleep(1500L);
+
+        this.userRepository.findAll()
+                .as(StepVerifier::create)
+                .expectNextMatches(user -> {
+                    assertThat(user.getId()).isEqualTo("testUserId");
+                    assertThat(user.getName()).isEqualTo("testUserName");
+                    return true;
+                })
+                .expectNextMatches(user -> {
+                    assertThat(user.getId()).isEqualTo("testUserId2");
+                    assertThat(user.getName()).isEqualTo("testUserName2");
+                    return true;
+                }).verifyComplete();
     }
 }
