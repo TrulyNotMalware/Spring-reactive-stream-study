@@ -46,14 +46,14 @@ public class RabbitMqTest {
         HashMap<String,String> body2 = new HashMap<>();
         body2.put("id","testUserId2");
         body2.put("name","testUserName2");
-        this.webTestClient.put().uri("/api/test/insertNewUser")
+        this.webTestClient.put().uri("/api/amqp/insertNewUser")
                 .bodyValue(body1)
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody();
         Thread.sleep(1500L);
 
-        this.webTestClient.put().uri("/api/test/insertNewUser")
+        this.webTestClient.put().uri("/api/amqp/insertNewUser")
                 .bodyValue(body2)
                 .exchange()
                 .expectStatus().isCreated()
