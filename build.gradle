@@ -7,7 +7,8 @@ plugins {
 
 group = 'com.spring'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 configurations {
     compileOnly {
@@ -97,7 +98,7 @@ test {
 
 jib {
     from {
-        image = "openjdk:8-jdk-alpine"
+        image = "eclipse-temurin:11.0.15_10-jdk"
     }
     to {
         image = "testing/${project.name}"
