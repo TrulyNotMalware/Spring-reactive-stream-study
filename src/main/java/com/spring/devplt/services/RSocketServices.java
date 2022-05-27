@@ -44,4 +44,9 @@ public class RSocketServices {
                 .doOnNext(this.userSinks::tryEmitNext)
                 .then();
     }
+
+    @MessageMapping("newUsers.monitor")
+    public Flux<User> monitornewUser(){
+        return this.userSinks.asFlux();
+    }
 }
