@@ -1,5 +1,5 @@
 #Dockerfile to builds loggers.
-FROM openjdk:8-jdk-alpine as builder
+FROM eclipse-temurin:11.0.15_10-jdk as builder
 RUN apk --no-cache add curl
 COPY gradlew .
 COPY gradle gradle
@@ -10,7 +10,7 @@ RUN chmod +x ./gradlew
 RUN ./gradlew build
 #RUN ./gradlew jibDockerBuild
 
-FROM openjdk:8-jdk-alpine
+FROM eclipse-temurin:11.0.15_10-jdk
 COPY --from=builder /build/libs/devplt-0.0.1-SNAPSHOT.jar /app.jar
 #COPY build/libs/*.jar app.jar
 ENV JAVA_OPTS=""
