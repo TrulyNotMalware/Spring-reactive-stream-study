@@ -4,6 +4,7 @@ package com.spring.devplt.controllers;
 import com.spring.devplt.models.TestModel;
 import com.spring.devplt.models.User;
 import com.spring.devplt.services.Services;
+import com.spring.devplt.utils.YamlMapper;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -66,5 +67,11 @@ public class Controller {
         //User 객체는 @Data 어노테이션으로, getter & Setter 모두 설정되어 있기 때문에,
         //Json 형식만 완벽하게 맞춰 준다면, @RequestBody 로 User 객체를 받아도 됨.
         return this.service.createNewUser(params.get("id"),params.get("name"),true);
+    }
+
+    @PostMapping(value = "/getServiceJson")
+    Mono<String> getServiceJson(@RequestBody HashMap<String, String> params){
+        log.debug("getServiceJson");
+        return this.service.getServiceJson();
     }
 }

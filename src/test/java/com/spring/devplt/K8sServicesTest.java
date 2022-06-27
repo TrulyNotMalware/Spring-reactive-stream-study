@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.util.List;
 
@@ -45,6 +46,15 @@ public class K8sServicesTest {
         this.client.pods().inNamespace(Namespace).create(testPods);
         this.client.pods().inNamespace(Namespace).create(testPods2);
 
+        String Namespace2 = "testNamespaces2";
+        Pod testPods3 = new PodBuilder()
+                .withNewMetadata()
+                .withName("testPods3")
+                .withNamespace(Namespace2)
+                .and()
+                .build();
+        this.client.pods().inNamespace(Namespace2).create(testPods3);
+
         // 생성자 주입
         this.services = new K8sServices(client);
     }
@@ -77,6 +87,17 @@ public class K8sServicesTest {
                 .map(ObjectMeta::getName)
                 .forEach(System.out::println);
         JSONObject json = this.services.getNamespaceList();
+
+    }
+
+    @Test
+    public void testGetPodLists(){
+        //null & null is get all pods lists.
+        this.services.getPodList(null,"testNamespaces")
+                .as(StepVerifier::create)
+                .assertNext(pod -> assertEquals(pod.getMetadata().getName(), "testPods2"))
+                .assertNext(pod -> assertEquals(pod.getMetadata().getName(), "testPods1"))
+                .verifyComplete();
 
     }
 }

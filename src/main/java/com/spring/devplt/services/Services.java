@@ -5,6 +5,7 @@ import com.spring.devplt.kubernetes.K8sServices;
 import com.spring.devplt.models.TestModel;
 import com.spring.devplt.models.User;
 import com.spring.devplt.repository.UserRepository;
+import com.spring.devplt.utils.YamlMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -35,6 +36,9 @@ public class Services {
     //Amqp
     private final AmqpTemplate amqpTemplate;
 
+    //Yaml Mapper
+    private final YamlMapper yamlMapper;
+
     private Random picker = new Random();
     // Database 라고 가정하고, 정보를 가져왔다고 생각.
     private List<TestModel> infos = Arrays.asList(
@@ -44,6 +48,12 @@ public class Services {
             new TestModel("4","4",false)
     );
 
+    public Mono<String> getServiceJson(){
+        return this.yamlMapper.getServiceTemplate().map(service -> {
+            log.debug("Service : {}",service.toString());
+            return service.toString();
+        });
+    }
 
     //실제 서비스 모델.
     public Flux<TestModel> getInformations(){

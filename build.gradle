@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.2'
+    id 'org.springframework.boot' version '2.5.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'com.google.cloud.tools.jib' version '2.1.0'
@@ -61,7 +61,7 @@ dependencies {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-web'
     }
 
-    //JUnit5
+    //Junit5 -> 버전 올리면 에러남. 2.5.X 에서는 이 버전의 JUnit 을 쓰자.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
@@ -69,9 +69,10 @@ dependencies {
     implementation 'org.json:json:20220320'
 
     //test Containers
-    testImplementation 'org.testcontainers:testcontainers:1.17.1'
-    testImplementation 'org.testcontainers:junit-jupiter:1.17.1'
-    implementation 'org.testcontainers:testcontainers-bom:1.17.1'
+    testImplementation 'org.testcontainers:testcontainers:1.17.2'
+    testImplementation 'org.testcontainers:junit-jupiter:1.17.2'
+    implementation 'org.testcontainers:testcontainers-bom:1.17.2'
+
     //Broker - Rabbit Mq
     testImplementation 'org.testcontainers:rabbitmq:1.17.1'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
@@ -92,7 +93,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
-    testImplementation 'org.assertj:assertj-core:3.22.0'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
 }
 
 test {
