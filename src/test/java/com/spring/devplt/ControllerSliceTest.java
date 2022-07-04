@@ -15,6 +15,9 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static reactor.core.publisher.Mono.when;
 
 import static org.junit.Assert.assertEquals;
@@ -38,12 +41,12 @@ public class ControllerSliceTest {
     public void setup(){
         this.id = "testUsers";
         this.name= "testUserName";
-
+        List<String> roles = Arrays.asList("superuser");
         // 협력자 준비. Controller 의 Slice test 이기 때문에, Service 쪽 로직은 동작 한다는 가정 하에 움직인다.
         // 절대 처음부터 종단테스트를 수행 X
         when(services.createNewUser(this.id,this.name,true))
                 .thenReturn(
-                        Mono.just(new User(this.id,"1234",this.name,true,null))
+                        Mono.just(new User(this.id,"1234",this.name,true,roles,null))
                 );
     }
 

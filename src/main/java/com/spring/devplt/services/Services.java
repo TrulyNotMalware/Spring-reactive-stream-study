@@ -70,8 +70,8 @@ public class Services {
 
     public Flux<User> searchWithExampleQuery(String id, String name, boolean isAvailable){
         Hooks.onOperatorDebug();
-
-        User user = new User(id, "1234", name, isAvailable, null);
+        List<String> roles = Arrays.asList("common_user");
+        User user = new User(id, "1234", name, isAvailable,roles, null);
 
         ExampleMatcher matcher = ( isAvailable ? ExampleMatcher.matchingAll() : ExampleMatcher.matchingAny())
                 .withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
@@ -85,7 +85,8 @@ public class Services {
     public Mono<User> createNewUser(String id,String name, boolean isAvailable){
         Hooks.onOperatorDebug();
         // Default Pwd 1234
-        User user = new User(id, "1234", name, isAvailable, null);
+        List<String> roles = Arrays.asList("common_user");
+        User user = new User(id, "1234", name, isAvailable,roles,null);
         return this.userRepository.save(user)
                 .doOnError(error -> {
                     log.trace(error.getMessage());
@@ -100,7 +101,8 @@ public class Services {
 
     public Mono<ResponseEntity<?>> amqpCreateNewUser(String id, String name, boolean isAvailable){
         Hooks.onOperatorDebug();
-        User user = new User(id, "1234", name, isAvailable, null);
+        List<String> roles = Arrays.asList("common_user");
+        User user = new User(id, "1234", name, isAvailable,roles,null);
         return Mono.just(user)
                 .subscribeOn(Schedulers.boundedElastic())
                 .flatMap( contentUser -> Mono.fromCallable(()->{

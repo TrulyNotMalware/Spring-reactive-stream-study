@@ -10,7 +10,9 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import reactor.test.StepVerifier;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -33,9 +35,8 @@ public class MongoDBSliceTest {
         this.today = new Date();
         this.date = new SimpleDateFormat("yyyy/MM/dd ");
         this.time = new SimpleDateFormat("hh:mm:ss");
-
-        this.testUser = new User("root","admin1234","admin",true,
-                date.format(today)+time.format(today));
+        List<String> roles = Arrays.asList("superuser");
+        this.testUser = new User("root","admin1234","admin",true,roles, date.format(today)+time.format(today));
 
     }
 

@@ -13,6 +13,9 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -27,14 +30,15 @@ public class AffordanceControllerTest {
     @BeforeEach
     public void setup(){
         //Test data 준비.
-        User sampleUser = new User("root","1234","Admin",true,null);
+        List<String> roles = Arrays.asList("superuser");
+        User sampleUser = new User("root","1234","Admin",true,roles,null);
 
         //상호작용 정의.
         when(this.userRepository.findById("root"))
                 .thenReturn(Mono.just(sampleUser));
         when(userRepository.save(any(User.class))).thenReturn(Mono.just(sampleUser));
 
-        this.services = new Services(this.userRepository,null,null);
+        this.services = new Services(this.userRepository,null,null,null);
     }
 
     @Test

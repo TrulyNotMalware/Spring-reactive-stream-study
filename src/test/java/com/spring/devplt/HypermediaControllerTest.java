@@ -13,6 +13,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,10 +33,11 @@ public class HypermediaControllerTest {
     @BeforeEach
     public void setup(){
         //Test data 준비.
+        List<String> roles = Arrays.asList("superuser");
         when(this.userRepository.findById("root"))
-                .thenReturn(Mono.just(new User("root","1234","Admin",true,null)));
+                .thenReturn(Mono.just(new User("root","1234","Admin",true,roles,null)));
 
-        this.services = new Services(this.userRepository,null,null);
+        this.services = new Services(this.userRepository,null,null,null);
     }
 
     @Test

@@ -30,7 +30,7 @@ public class ServicesTest { //Service Unit test
     void setUp(){
         UserRepository userRepository = mock(UserRepository.class);
         //Test 데이터 정의
-        User sampleUser = new User("test","1234","testUser",true,null);
+        User sampleUser = new User("test","1234","testUser",true,null,null);
 
         //협력자와 상호작용을 정의.
         when(userRepository.save(any(User.class))).thenReturn(Mono.just(sampleUser));
