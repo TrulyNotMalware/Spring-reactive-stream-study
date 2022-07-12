@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 @Slf4j
 @Configuration
 @EnableWebFluxSecurity
+@EnableReactiveMethodSecurity
 //public class SecurityConfig extends WebSecurityConfigurerAdapter { DEPRECATED
 public class SecurityConfig{
     @Value("${jwt.secret}")
@@ -58,14 +60,18 @@ public class SecurityConfig{
     @Bean
     SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http){
         return http.authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
-                .pathMatchers(HttpMethod.POST,"/admin").hasRole("ROLE_ADMIN")
-                .pathMatchers(HttpMethod.DELETE,"/**").hasRole("ROLE_ADMIN")
+//                .pathMatchers(HttpMethod.POST,"/admin").hasRole("ROLE_ADMIN")
+//                .pathMatchers(HttpMethod.DELETE,"/**").hasRole("ROLE_ADMIN") -> Changed to Method level security
                 .anyExchange().authenticated()
                 .and()
                 .formLogin()
                 .and()
                 .csrf().disable()
                 .httpBasic()).build();
+    }
+    static final String ADMIN = "ADMIN";
+    static String role(String auth) {
+        return "ROLE_" + auth;
     }
 
 }

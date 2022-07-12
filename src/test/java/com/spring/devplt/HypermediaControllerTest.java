@@ -33,7 +33,7 @@ public class HypermediaControllerTest {
     @BeforeEach
     public void setup(){
         //Test data 준비.
-        List<String> roles = Arrays.asList("superuser");
+        List<String> roles = Arrays.asList("ROLE_ADMIN");
         when(this.userRepository.findById("root"))
                 .thenReturn(Mono.just(new User("root","1234","Admin",true,roles,null)));
 
