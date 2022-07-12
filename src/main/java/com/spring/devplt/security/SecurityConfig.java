@@ -4,32 +4,24 @@ import com.spring.devplt.models.User;
 import com.spring.devplt.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AnonymousAuthenticationProvider;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationTrustResolver;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 
 @Slf4j
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableWebFluxSecurity
+//public class SecurityConfig extends WebSecurityConfigurerAdapter { DEPRECATED
+public class SecurityConfig{
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
@@ -44,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 return org.springframework.security.core.userdetails.User.withUsername(user1.getName())
                         .passwordEncoder(encoder::encode)
                         .password(user1.getPwd())
+                        .authorities(user1.getRoles().toArray(new String[0]))
                         .build();
             });
         };
@@ -53,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-
 //    @Bean
 //    public ReactiveUserDetailsService userDetailsService(UserRepository repository){
 //        return username -> repository.findByName(username)
@@ -61,19 +53,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                DEPRECATED
 //    }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http.cors().and().csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    //방식 변경됨. Extends 해서 구현하지 말고, SecurityFilterChain 을 Bean 으로 등록한다.
+    //기존의 configure methods 를 대체한다.
+    @Bean
+    SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http){
+        return http.authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
+                .pathMatchers(HttpMethod.POST,"/admin").hasRole("ROLE_ADMIN")
+                .pathMatchers(HttpMethod.DELETE,"/**").hasRole("ROLE_ADMIN")
+                .anyExchange().authenticated()
                 .and()
-                .authorizeRequests().antMatchers("/api/test","/").permitAll()
-                .anyRequest().authenticated();
+                .formLogin()
+                .and()
+                .csrf().disable()
+                .httpBasic()).build();
     }
 
-//    @Override
-//    public void configure(WebSecurity web) throws Exception{
-//        web.ignoring().antMatchers("/static/js/**","/static/css/**","/static/img/**","/static/frontend/**");
-//    }
 }
