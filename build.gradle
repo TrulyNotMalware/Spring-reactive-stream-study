@@ -95,6 +95,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.assertj:assertj-core:3.23.1'
+
+    //MariaDB
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    runtimeOnly 'org.mariadb:r2dbc-mariadb'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 }
 
 test {
