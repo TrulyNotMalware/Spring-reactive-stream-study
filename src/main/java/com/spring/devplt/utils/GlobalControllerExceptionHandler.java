@@ -1,7 +1,6 @@
 package com.spring.devplt.utils;
 
-import com.spring.devplt.exceptions.InvalidInputException;
-import com.spring.devplt.exceptions.NotFoundException;
+import com.spring.devplt.exceptions.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
@@ -18,6 +17,12 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 @Slf4j
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
+
+    @ExceptionHandler(RestApiExceptions.class)
+    public @ResponseBody HttpErrorInfo handleResourceNotFoundExceptions(ServerHttpRequest request,final RestApiExceptions e){
+        final ErrorCode errorCode = CommonErrorCode.RESOURCE_NOT_FOUND;
+        return createHttpErrorInfo(errorCode.getHttpStatus(),request,e);
+    }
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
